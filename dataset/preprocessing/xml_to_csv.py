@@ -1,6 +1,6 @@
 import csv
 import xmltodict
-def main():
+def convert():
     with open('../train/obesity_patient_records_training.xml') as fd:
         xml_data_train = fd.read()
         xml_dict_train = xmltodict.parse(xml_data_train)
@@ -80,4 +80,4 @@ def main():
 
 
 if __name__ =='__main__':
-    main()
+    convert()
