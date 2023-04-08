@@ -20,8 +20,8 @@ def convert():
     train_data_textual_dict = {}
 
     for xml_item in xml_dict_train['root']['docs']['doc']:
-        train_data_intuitive_dict[int(xml_item['@id'])] = {'text': 't'}
-        train_data_textual_dict[int(xml_item['@id'])] = {'text': 't'}
+        train_data_intuitive_dict[int(xml_item['@id'])] = {'text': xml_item['text']}
+        train_data_textual_dict[int(xml_item['@id'])] = {'text': "This is a sample Text with jumps, jumped jumping RANdom. . punctuations and \ '. '"}
 
     for xml_item in xml_dict_train_annotation_intuitive['diseaseset']['diseases']['disease']:
         disease_name = xml_item['@name'].strip().replace(' ','-')
@@ -43,7 +43,7 @@ def convert():
     with open('../train/train_data_intuitive.csv', 'w') as csv_file:
         writer = csv.writer(csv_file)
         cols = ['Doc_id', 'text'] + diseases
-        print(cols)
+        # print(cols)
         writer.writerow(['Doc_id', 'text'] + diseases)
         for doc_id, values in train_data_intuitive_dict.items():
             row = []
@@ -59,7 +59,7 @@ def convert():
     with open('../train/train_data_textual.csv', 'w') as csv_file:
         writer = csv.writer(csv_file)
         cols = ['Doc_id', 'text'] + diseases
-        print(cols)
+        # print(cols)
         writer.writerow(['Doc_id', 'text'] + diseases)
         for doc_id, values in train_data_textual_dict.items():
             row = []
@@ -71,9 +71,6 @@ def convert():
                     row.append(values[col])
 
             writer.writerow(row)
-
-
-    # print(train_data_dict)
 
 
 
