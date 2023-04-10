@@ -27,14 +27,3 @@ class Word2VecFeatureGeneration:
 
         return X, Y, words
 
-# def main():
-#     dataPreprocessing = DataPreprocessing('../train/train_data_textual.csv', 'Asthma')
-#     preprocessed_df = dataPreprocessing.preprocess_data()
-#     print("Completed preprocessing")
-#     X, Y, words = word2vec_matrix_gen(preprocessed_df, 'Asthma')
-#
-#     print(X.shape, Y.shape, words)
-
-
-# if __name__ =='__main__':
-#     main()

@@ -21,16 +21,3 @@ class TFIDFFeatureGeneration:
         Y = np.array(self.df[self.disease_name].values)
         print(words, X.shape, Y.shape)
         return X, Y, words
-
-# def main():
-#     dataPreprocessing = DataPreprocessing('../train/train_data_textual.csv', 'Asthma')
-#     preprocessed_df = dataPreprocessing.preprocess_data()
-#
-#     X, Y, words = TF_IDF_FeatureGeneration(preprocessed_df, 'Asthma').tf_idf_matrix_gen()
-#
-#     print(X.shape, Y.shape, words)
-
-
-#
-# if __name__ =='__main__':
-#     main()

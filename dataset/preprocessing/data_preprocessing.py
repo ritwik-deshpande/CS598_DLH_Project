@@ -32,6 +32,12 @@ class DataPreprocessing:
         row[1] = ' '.join([token for token in row[1]])
         return row
 
+    def one_hot_encoding(self, row):
+        if row[2] == 'Y':
+            row[2] = 1.0
+        else:
+            row[2] = 0.0
+        return row
 
     def preprocess_data(self):
         self.df = self.df.apply(self.to_lower_case, axis=1)
@@ -39,15 +45,9 @@ class DataPreprocessing:
         self.df = self.df.apply(self.remove_punctuation_and_numeric_values, axis=1)
         self.df = self.df.apply(self.lemmatization, axis=1)
         self.df = self.df.apply(self.join, axis=1)
+        self.df = self.df.apply(self.one_hot_encoding, axis=1)
         return self.df
         # print(self.df)
-def main():
-    dataPreprocessing = DataPreprocessing('../train/train_data_intuitive.csv', 'Asthma')
-    dataPreprocessing.preprocess_data()
 
-
-
-if __name__ =='__main__':
-    main()
 
 
