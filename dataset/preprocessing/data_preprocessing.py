@@ -3,12 +3,8 @@ import spacy
 
 
 class DataPreprocessing:
-    def __init__(self, csv_file, disease_name):
-        self.disease_name = disease_name
-        self.nlp  = spacy.load("en_core_web_sm")
-        self.df = pd.read_csv(csv_file)[['Doc_id', 'text', disease_name]]
-        self.df = self.df[self.df[disease_name].isin(['Y', 'N'])]
-        print("The shape of df is", self.df.shape)
+    def __init__(self):
+        self.nlp  = spacy.load("en_core_web_sm")        
 
     def to_lower_case(self, row):
         row[1] = str.lower(row[1])
@@ -33,20 +29,25 @@ class DataPreprocessing:
         return row
 
     def one_hot_encoding(self, row):
-        if row[2] == 'Y':
-            row[2] = 1.0
-        else:
-            row[2] = 0.0
+        for row_idx in range(2, len(row)):
+            if row[row_idx] == 'Y':
+                row[row_idx] = 1.0
+            elif row[row_idx] == 'N':
+                row[row_idx] = 0.0
+            else:
+                row[row_idx] = -1
         return row
 
-    def preprocess_data(self):
+    def preprocess_data(self, inp_csv_file, out_csv_file):
+        self.df = pd.read_csv(inp_csv_file)
         self.df = self.df.apply(self.to_lower_case, axis=1)
         self.df = self.df.apply(self.tokenize, axis=1)
         self.df = self.df.apply(self.remove_punctuation_and_numeric_values, axis=1)
         self.df = self.df.apply(self.lemmatization, axis=1)
         self.df = self.df.apply(self.join, axis=1)
         self.df = self.df.apply(self.one_hot_encoding, axis=1)
-        return self.df
+        self.df.to_csv(out_csv_file, index=False)
+
         # print(self.df)
 
 
