@@ -1,5 +1,5 @@
 import numpy as np
-
+import collections
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 MAX_FEATURES = 600
@@ -19,5 +19,5 @@ class TFIDFFeatureGeneration:
 
         X = tfidf_matrix.toarray()
         Y = np.array(self.df[self.disease_name].values)
-        print(words, X.shape, Y.shape)
+        print(X.shape, Y.shape, collections.Counter(list(Y)))
         return X, Y, words
