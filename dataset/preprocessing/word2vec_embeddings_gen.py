@@ -1,7 +1,8 @@
 import numpy as np
 from gensim.models import Word2Vec
+import collections
 
-VECTOR_SIZE = 10
+VECTOR_SIZE = 100
 
 
 class Word2VecFeatureGeneration:
@@ -20,10 +21,10 @@ class Word2VecFeatureGeneration:
             for j, word in enumerate(sentence):
                 word_vectors.append(model.wv.get_vector(word))
             X.append(word_vectors)
-        X = np.array(X)
+        X = np.array(X, dtype=list)
         Y = np.array(self.df[self.disease_name].values)
         words = model.wv.key_to_index.keys()
-        print(words, X.shape, Y.shape)
+        print(X.shape, Y.shape, collections.Counter(list(Y)))
 
         return X, Y, words
 
