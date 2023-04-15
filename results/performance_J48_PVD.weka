@@ -1,0 +1,79 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.J48 -C 0.25 -M 2
+Relation:     pandasdata
+Instances:    556
+Attributes:   601
+              [list of attributes omitted]
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+J48 pruned tree
+------------------
+
+f563 <= 0.010512
+|   f502 <= 0
+|   |   f463 <= 0.051334: 0_0 (327.0/2.0)
+|   |   f463 > 0.051334
+|   |   |   f345 <= 0.04072
+|   |   |   |   f482 <= 0.054135: 0_0 (30.0)
+|   |   |   |   f482 > 0.054135: 1_0 (3.0/1.0)
+|   |   |   f345 > 0.04072: 1_0 (2.0)
+|   f502 > 0
+|   |   f345 <= 0.02615
+|   |   |   f562 <= 0.030695
+|   |   |   |   f147 <= 0.020762
+|   |   |   |   |   f482 <= 0.044581: 0_0 (70.0)
+|   |   |   |   |   f482 > 0.044581
+|   |   |   |   |   |   f6 <= 0.019314: 1_0 (2.0)
+|   |   |   |   |   |   f6 > 0.019314: 0_0 (2.0)
+|   |   |   |   f147 > 0.020762: 1_0 (4.0/1.0)
+|   |   |   f562 > 0.030695
+|   |   |   |   f7 <= 0: 1_0 (3.0)
+|   |   |   |   f7 > 0: 0_0 (3.0)
+|   |   f345 > 0.02615
+|   |   |   f580 <= 0.015063: 0_0 (4.0)
+|   |   |   f580 > 0.015063: 1_0 (5.0)
+f563 > 0.010512
+|   f390 <= 0.008159
+|   |   f593 <= 0.056061: 0_0 (31.0/1.0)
+|   |   f593 > 0.056061: 1_0 (4.0)
+|   f390 > 0.008159
+|   |   f499 <= 0.017082: 1_0 (58.0)
+|   |   f499 > 0.017082
+|   |   |   f195 <= 0: 1_0 (5.0)
+|   |   |   f195 > 0: 0_0 (3.0)
+
+Number of Leaves  : 	17
+
+Size of the tree : 	33
+
+
+Time taken to build model: 0.11 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         503               90.4676 %
+Incorrectly Classified Instances        53                9.5324 %
+Kappa statistic                          0.6439
+Mean absolute error                      0.1009
+Root mean squared error                  0.299 
+Relative absolute error                 38.0682 %
+Root relative squared error             82.2835 %
+Total Number of Instances              556     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.940    0.287    0.946      0.940    0.943      0.644    0.813     0.927     0_0
+                 0.713    0.060    0.689      0.713    0.701      0.644    0.813     0.543     1_0
+Weighted Avg.    0.905    0.252    0.906      0.905    0.905      0.644    0.813     0.867     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 441  28 |   a = 0_0
+  25  62 |   b = 1_0
+

@@ -1,0 +1,65 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.J48 -C 0.25 -M 2
+Relation:     pandasdata
+Instances:    553
+Attributes:   601
+              [list of attributes omitted]
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+J48 pruned tree
+------------------
+
+f359 <= 0
+|   f360 <= 0
+|   |   f48 <= 0.027796
+|   |   |   f539 <= 0.029717: 0_0 (273.0/3.0)
+|   |   |   f539 > 0.029717
+|   |   |   |   f405 <= 0
+|   |   |   |   |   f70 <= 0.042678
+|   |   |   |   |   |   f406 <= 0.153184: 0_0 (28.0)
+|   |   |   |   |   |   f406 > 0.153184: 1_0 (2.0)
+|   |   |   |   |   f70 > 0.042678: 1_0 (2.0)
+|   |   |   |   f405 > 0: 1_0 (2.0)
+|   |   f48 > 0.027796
+|   |   |   f100 <= 0.026333
+|   |   |   |   f433 <= 0.034773: 0_0 (15.0)
+|   |   |   |   f433 > 0.034773: 1_0 (2.0)
+|   |   |   f100 > 0.026333: 1_0 (2.0)
+|   f360 > 0: 1_0 (53.0)
+f359 > 0: 1_0 (174.0/1.0)
+
+Number of Leaves  : 	10
+
+Size of the tree : 	19
+
+
+Time taken to build model: 0.1 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         528               95.4792 %
+Incorrectly Classified Instances        25                4.5208 %
+Kappa statistic                          0.9079
+Mean absolute error                      0.0495
+Root mean squared error                  0.2131
+Relative absolute error                 10.0793 %
+Root relative squared error             43.0193 %
+Total Number of Instances              553     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.959    0.050    0.962      0.959    0.960      0.908    0.943     0.950     0_0
+                 0.950    0.041    0.946      0.950    0.948      0.908    0.943     0.878     1_0
+Weighted Avg.    0.955    0.046    0.955      0.955    0.955      0.908    0.943     0.919     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 301  13 |   a = 0_0
+  12 227 |   b = 1_0
+

@@ -1,0 +1,83 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.J48 -C 0.25 -M 2
+Relation:     pandasdata
+Instances:    526
+Attributes:   601
+              [list of attributes omitted]
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+J48 pruned tree
+------------------
+
+f564 <= 0.010999
+|   f45 <= 0.04941
+|   |   f517 <= 0.013298
+|   |   |   f570 <= 0.017375: 0_0 (286.0/1.0)
+|   |   |   f570 > 0.017375
+|   |   |   |   f563 <= 0
+|   |   |   |   |   f534 <= 0.07048: 0_0 (41.0)
+|   |   |   |   |   f534 > 0.07048: 1_0 (3.0/1.0)
+|   |   |   |   f563 > 0: 1_0 (4.0/1.0)
+|   |   f517 > 0.013298
+|   |   |   f270 <= 0.022188
+|   |   |   |   f484 <= 0.041849
+|   |   |   |   |   f436 <= 0.049733: 0_0 (52.0)
+|   |   |   |   |   f436 > 0.049733: 1_0 (3.0/1.0)
+|   |   |   |   f484 > 0.041849: 1_0 (3.0)
+|   |   |   f270 > 0.022188: 1_0 (5.0/1.0)
+|   f45 > 0.04941
+|   |   f175 <= 0.02045: 0_0 (17.0)
+|   |   f175 > 0.02045
+|   |   |   f90 <= 0.015563: 1_0 (7.0)
+|   |   |   f90 > 0.015563: 0_0 (2.0)
+f564 > 0.010999
+|   f385 <= 0.010932
+|   |   f370 <= 0.013444
+|   |   |   f26 <= 0
+|   |   |   |   f83 <= 0.011828
+|   |   |   |   |   f138 <= 0.013696: 1_0 (18.0)
+|   |   |   |   |   f138 > 0.013696: 0_0 (6.0/1.0)
+|   |   |   |   f83 > 0.011828: 0_0 (2.0)
+|   |   |   f26 > 0: 0_0 (2.0)
+|   |   f370 > 0.013444: 0_0 (11.0)
+|   f385 > 0.010932
+|   |   f320 <= 0.050324: 0_0 (60.0/1.0)
+|   |   f320 > 0.050324
+|   |   |   f13 <= 0.016092: 0_0 (2.0)
+|   |   |   f13 > 0.016092: 1_0 (2.0)
+
+Number of Leaves  : 	19
+
+Size of the tree : 	37
+
+
+Time taken to build model: 0.14 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         447               84.981  %
+Incorrectly Classified Instances        79               15.019  %
+Kappa statistic                          0.0498
+Mean absolute error                      0.1535
+Root mean squared error                  0.3744
+Relative absolute error                 99.2005 %
+Root relative squared error            135.2013 %
+Total Number of Instances              526     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.915    0.864    0.921      0.915    0.918      0.050    0.535     0.922     0_0
+                 0.136    0.085    0.128      0.136    0.132      0.050    0.535     0.100     1_0
+Weighted Avg.    0.850    0.799    0.854      0.850    0.852      0.050    0.535     0.853     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 441  41 |   a = 0_0
+  38   6 |   b = 1_0
+
