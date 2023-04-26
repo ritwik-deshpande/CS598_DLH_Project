@@ -18,7 +18,6 @@ Cython==0.29.34
 debugpy==1.6.7
 decorator==5.1.1
 defusedxml==0.7.1
-en-core-web-sm==3.5.0
 entrypoints==0.4
 fastjsonschema==2.16.3
 gensim==4.2.0
@@ -29,7 +28,6 @@ ipykernel==6.16.2
 ipython==7.34.0
 ipython-genutils==0.2.0
 ipywidgets==8.0.6
-javabridge==1.0.19.post9+gc8c12b4
 jedi==0.18.2
 Jinja2==3.1.2
 joblib==1.2.0
@@ -72,7 +70,6 @@ pydantic==1.10.7
 Pygments==2.14.0
 pyrsistent==0.19.3
 python-dateutil==2.8.2
-python-javabridge==4.0.3
 python-weka-wrapper3==0.1.8
 pytz==2023.3
 pyzmq==25.0.2
