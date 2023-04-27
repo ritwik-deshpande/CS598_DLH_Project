@@ -1,5 +1,5 @@
 
-def main():
+def train():
     import torch
     import torch.nn as nn
     import pandas as pd
@@ -64,10 +64,10 @@ def main():
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        print(f"Epoch loss is {loss}")
+        print(f"Epoch {epoch} loss is {loss}")
 
-    torch.save(bilstm.state_dict(), f'./models/DL/tf-idf-features/model_{morbidity}.pth')
+    torch.save(bilstm.state_dict(), f'./models/DL/word-embeddings/model_{morbidity}.pth')
 
 
 if __name__ == '__main__':
-    main()
+    train()
