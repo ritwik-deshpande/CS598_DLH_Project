@@ -1,0 +1,14 @@
+BootStrap: localimage
+From: /sw/external/NGC/pytorch_22.09-py3.sif
+
+
+
+%post
+    git clone https://github.com/ritwik-deshpande/CS598_DLH_Project.git
+    cd CS598_DLH_Project/
+    pip install funcx-common==0.0.25
+    pip install funcx-endpoint==1.0.11
+    pip install -r dl_requirements.txt
+    
+%runscript
+    echo "----- CLEAN Inference ----------"
