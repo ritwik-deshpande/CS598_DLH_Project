@@ -1,0 +1,95 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.J48 -C 0.25 -M 2
+Relation:     pandasdata
+Instances:    548
+Attributes:   601
+              [list of attributes omitted]
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+J48 pruned tree
+------------------
+
+f119 <= 0.010545
+|   f78 <= 0.009035
+|   |   f343 <= 0.019794
+|   |   |   f470 <= 0.009986: 0_0 (146.0)
+|   |   |   f470 > 0.009986
+|   |   |   |   f283 <= 0
+|   |   |   |   |   f300 <= 0.019202: 0_0 (36.0)
+|   |   |   |   |   f300 > 0.019202: 1_0 (2.0)
+|   |   |   |   f283 > 0: 1_0 (3.0/1.0)
+|   |   f343 > 0.019794
+|   |   |   f492 <= 0.025842: 0_0 (5.0)
+|   |   |   f492 > 0.025842: 1_0 (5.0)
+|   f78 > 0.009035
+|   |   f342 <= 0.033921
+|   |   |   f464 <= 0.047525: 1_0 (70.0)
+|   |   |   f464 > 0.047525
+|   |   |   |   f187 <= 0.021335: 1_0 (4.0)
+|   |   |   |   f187 > 0.021335: 0_0 (3.0)
+|   |   f342 > 0.033921
+|   |   |   f303 <= 0.008258: 1_0 (3.0)
+|   |   |   f303 > 0.008258: 0_0 (5.0)
+f119 > 0.010545
+|   f193 <= 0.031145
+|   |   f152 <= 0.009939
+|   |   |   f202 <= 0.009221
+|   |   |   |   f464 <= 0.014885: 1_0 (9.0)
+|   |   |   |   f464 > 0.014885: 0_0 (2.0)
+|   |   |   f202 > 0.009221: 0_0 (4.0)
+|   |   f152 > 0.009939
+|   |   |   f405 <= 0.047513
+|   |   |   |   f201 <= 0.052606: 1_0 (187.0)
+|   |   |   |   f201 > 0.052606
+|   |   |   |   |   f240 <= 0.157877: 1_0 (8.0)
+|   |   |   |   |   f240 > 0.157877: 0_0 (2.0)
+|   |   |   f405 > 0.047513
+|   |   |   |   f259 <= 0.123513: 1_0 (10.0)
+|   |   |   |   f259 > 0.123513: 0_0 (5.0)
+|   f193 > 0.031145
+|   |   f541 <= 0.021405
+|   |   |   f60 <= 0.009631
+|   |   |   |   f137 <= 0.056707
+|   |   |   |   |   f104 <= 0.029945
+|   |   |   |   |   |   f406 <= 0.063589: 1_0 (26.0/1.0)
+|   |   |   |   |   |   f406 > 0.063589: 0_0 (2.0)
+|   |   |   |   |   f104 > 0.029945: 0_0 (2.0)
+|   |   |   |   f137 > 0.056707: 0_0 (3.0)
+|   |   |   f60 > 0.009631: 0_0 (4.0)
+|   |   f541 > 0.021405: 0_0 (2.0)
+
+Number of Leaves  : 	25
+
+Size of the tree : 	49
+
+
+Time taken to build model: 0.1 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         468               85.4015 %
+Incorrectly Classified Instances        80               14.5985 %
+Kappa statistic                          0.6984
+Mean absolute error                      0.1465
+Root mean squared error                  0.37  
+Relative absolute error                 30.3497 %
+Root relative squared error             75.3153 %
+Total Number of Instances              548     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.830    0.129    0.815      0.830    0.822      0.698    0.861     0.790     0_0
+                 0.871    0.170    0.882      0.871    0.876      0.698    0.861     0.857     1_0
+Weighted Avg.    0.854    0.154    0.855      0.854    0.854      0.698    0.861     0.829     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 185  38 |   a = 0_0
+  42 283 |   b = 1_0
+

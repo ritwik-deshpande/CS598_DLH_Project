@@ -1,0 +1,51 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1
+Relation:     pandasdata
+Instances:    567
+Attributes:   601
+              [list of attributes omitted]
+Test mode:    user supplied test set:  size unknown (reading incrementally)
+
+=== Classifier model (full training set) ===
+
+JRIP rules:
+===========
+
+(f272 <= 0) and (f144 <= 0) and (f160 <= 0) and (f318 <= 0.15108) and (f143 <= 0.02096) => class=0_0 (120.0/3.0)
+(f272 <= 0) and (f144 <= 0.009683) and (f160 <= 0.027352) and (f143 <= 0) and (f78 <= 0.021112) => class=0_0 (46.0/6.0)
+ => class=1_0 (401.0/14.0)
+
+Number of Rules : 3
+
+
+Time taken to build model: 0.66 seconds
+
+=== Evaluation on test set ===
+
+Time taken to test model on supplied test set: 0.05 seconds
+
+=== Summary ===
+
+Correctly Classified Instances         399               83.2985 %
+Incorrectly Classified Instances        80               16.7015 %
+Kappa statistic                          0.5801
+Mean absolute error                      0.1889
+Root mean squared error                  0.3968
+Relative absolute error                 44.6769 %
+Root relative squared error             86.1917 %
+Total Number of Instances              479     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.616    0.072    0.789      0.616    0.692      0.588    0.772     0.604     0_0
+                 0.928    0.384    0.847      0.928    0.885      0.588    0.772     0.836     1_0
+Weighted Avg.    0.833    0.289    0.829      0.833    0.827      0.588    0.772     0.765     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+  90  56 |   a = 0_0
+  24 309 |   b = 1_0
+

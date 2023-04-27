@@ -1,0 +1,19 @@
+BootStrap: docker
+From: pyhf/cuda:0.6.2-torch-cuda-11.1
+
+
+%post
+    git clone https://github.com/ritwik-deshpande/CS598_DLH_Project.git
+    cd CS598_DLH_Project/
+    pip install funcx-common==0.0.25
+    pip install funcx-endpoint==1.0.11
+    pip install -r dl_requirements.txt
+    python -m spacy download en_core_web_sm
+    chmod 777 setup.sh
+    ./setup.sh
+
+%runscript
+    echo "----- CLEAN Inference ----------"
+
+
+# singularity exec --mount type=bind,src=/scratch/bbmi/bengal1,dst=/project /projects/bbmi/bengal1/CLEAN_ritwikd2.sif funcx-worker  --worker_id 0 -a 127.0.0.1 -p 59972 -t /projects/bbmi/bengal1/CLEAN_ritwikd2.sif --logdir=/u/ritwikd2/.funcx/clean/HighThroughputExecutor/worker_logs/249faa98a6e6
