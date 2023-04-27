@@ -9,6 +9,8 @@ From: /sw/external/NGC/pytorch_22.09-py3.sif
     pip install funcx-common==0.0.25
     pip install funcx-endpoint==1.0.11
     pip install -r dl_requirements.txt
+    python -m spacy download en_core_web_sm
+    chmod 777 setup.sh
     ./setup.sh
 
 %runscript
