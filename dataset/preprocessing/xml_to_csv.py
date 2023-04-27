@@ -1,5 +1,6 @@
 import csv
 import xmltodict
+import os
 
 def write_to_csv(output_file_name, data_dict, diseases):
     with open(output_file_name, 'w') as csv_file:
@@ -58,6 +59,7 @@ def convert(inp_train_text_xml_file, inp_train_intuitive_xml, inp_train_textual_
 
 
 if __name__ == '__main__':
+    os.chdir(os.path.dirname(__file__))
     convert('../train/obesity_patient_records_training.xml',
             '../train/obesity_standoff_intuitive_annotations_training.xml',
             '../train/obesity_standoff_textual_annotations_training.xml',
