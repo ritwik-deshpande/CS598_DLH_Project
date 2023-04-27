@@ -1,6 +1,5 @@
-BootStrap: localimage
-From: /sw/external/NGC/pytorch_22.09-py3.sif
-
+BootStrap: docker
+From: pyhf/cuda:0.6.2-torch-cuda-11.1
 
 
 %post
