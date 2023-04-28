@@ -1,26 +1,20 @@
 import csv
 import sys
 import os
+import pandas as pd
 import argparse
 module_path = os.path.join(os.path.dirname(__file__), '..', '..', '..')
 sys.path.append(module_path)
+from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration
 os.chdir(module_path)
 
-def train_and_validate(morbidity, hidden_size_1, hidden_size_2, n_splits, epochs):
+def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
     import torch
     import torch.nn as nn
-    import pandas as pd
     import numpy as np
-    import sys
-    import os
     from sklearn.model_selection import KFold
     from sklearn.metrics import f1_score
-    module_path = os.path.join(os.path.dirname(__file__), '..', '..', '..')
-    sys.path.append(module_path)
-    from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration
-    os.chdir(module_path)
-
-
+   
     class BiLSTM(nn.Module):
         def __init__(self, input_size, hidden_size_1, hidden_size_2, num_layers, output_size):
             super(BiLSTM, self).__init__()
@@ -42,12 +36,7 @@ def train_and_validate(morbidity, hidden_size_1, hidden_size_2, n_splits, epochs
             # print(out.shape)
             out = self.fc(out[:, -1, :])
             return out
-
-        
-    train_preprocessed_df = pd.read_csv('./dataset/train/train_data_intuitive_preprocessed.csv')
-    train_preprocessed_df = train_preprocessed_df[train_preprocessed_df[morbidity].isin([1.0, 0.0])]
-
-    X, Y, words = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).word2vec_matrix_gen()
+    
     X = torch.tensor(X, dtype=torch.float32)
     Y = torch.tensor(Y, dtype=torch.float32)
     # print(X.shape)
@@ -129,7 +118,12 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
         writer.writerow([column_headings[0], column_headings[1], column_headings[2]])
     
     for morbidity in morbidities[:1]:
-        f1_macro, f1_micro = train_and_validate(morbidity, hidden_size_1, hidden_size_2, n_splits, epochs)
+        train_preprocessed_df = pd.read_csv('./dataset/train/train_data_intuitive_preprocessed.csv')
+        train_preprocessed_df = train_preprocessed_df[train_preprocessed_df[morbidity].isin([1.0, 0.0])]
+
+        X, Y, words = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).word2vec_matrix_gen()
+    
+        f1_macro, f1_micro = train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y)
         data = [f1_macro, f1_micro]
         all_f1_macro_scores.append(f1_macro)
         all_f1_micro_scores.append(f1_micro)
