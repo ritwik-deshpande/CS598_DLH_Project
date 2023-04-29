@@ -85,7 +85,8 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
             print(f"Epoch {epoch} loss is {loss}")
 
         bilstm.eval()
-        y_hat = bilstm(X_val_fold)
+        with torch.no_grad():
+            y_hat = bilstm(X_val_fold)
         y_hat = y_hat.view(y_hat.shape[0])
 
         # print(Y_val_fold.shape, y_hat.shape)
