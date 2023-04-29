@@ -10,7 +10,7 @@ sys.path.append(module_path)
 from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration
 os.chdir(module_path)
 
-def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
+def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity):
     import torch
     import torch.nn as nn
     import numpy as np
@@ -39,6 +39,12 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
             out = self.fc(out[:, -1, :])
             return out
     
+    train_preprocessed_df = pd.read_csv('./dataset/train/train_data_intuitive_preprocessed.csv')
+    train_preprocessed_df = train_preprocessed_df[train_preprocessed_df[morbidity].isin([1.0, 0.0])]
+
+    X, Y, words = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).word2vec_matrix_gen()
+        
+
     X = torch.tensor(X, dtype=torch.float32)
     Y = torch.tensor(Y, dtype=torch.float32)
     # print(X.shape)
@@ -128,13 +134,8 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
         writer = csv.writer(file)
         writer.writerow([column_headings[0], column_headings[1], column_headings[2]])
     
-    with FuncXExecutor(endpoint_id="006f558d-df82-45c2-b2d5-94274ef41a69", container_id="ac70db7c-406d-4697-be1e-55cbf56b86f8") as ex:
+    with FuncXExecutor(endpoint_id=ENDPOINT_ID, container_id=CONTAINER_ID, batch_size=32) as ex:
         for morbidity in morbidities[:1]:
-            train_preprocessed_df = pd.read_csv('./dataset/train/train_data_intuitive_preprocessed.csv')
-            train_preprocessed_df = train_preprocessed_df[train_preprocessed_df[morbidity].isin([1.0, 0.0])]
-
-            X, Y, words = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).word2vec_matrix_gen()
-        
             fut = ex.submit(train_and_validate, hidden_size_1, hidden_size_2, n_splits, epochs, X, Y)
             res = fut.result()
             print(res)
@@ -157,6 +158,8 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
         writer.writerow(row)
 
 if __name__ == '__main__':
+    CONTAINER_ID = "db367450-ab9d-421b-a296-e29d757943e5"
+    ENDPOINT_ID = "8056e8e8-2e32-4c75-88f1-81ff7a932f00"
     parser = argparse.ArgumentParser(description='Train and Validate DL model')
 
     parser.add_argument('--epochs', '-e', type=str, help='Number of epochs')
