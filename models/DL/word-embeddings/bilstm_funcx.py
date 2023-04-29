@@ -136,7 +136,7 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
     
     with FuncXExecutor(endpoint_id=ENDPOINT_ID, container_id=CONTAINER_ID, batch_size=32) as ex:
         for morbidity in morbidities[:1]:
-            fut = ex.submit(train_and_validate, hidden_size_1, hidden_size_2, n_splits, epochs, X, Y)
+            fut = ex.submit(train_and_validate, hidden_size_1, hidden_size_2, n_splits, epochs, morbidity)
             res = fut.result()
             print(res)
             f1_macro, f1_micro = res
