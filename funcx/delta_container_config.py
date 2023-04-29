@@ -21,7 +21,7 @@ config = Config(
             scheduler_mode='soft',
             worker_mode='singularity_reuse',
             container_type='singularity',
-            container_cmd_options="--nv --mount type=bind,src=/u/ritwikd2/CS598_DLH_Project/,dst=/",
+            container_cmd_options="--nv --mount type=bind,src=/u/ritwikd2/CS598_DLH_Project/,dst=/repo",
             provider=SlurmProvider(
                 partition='gpuA100x4-interactive',
                 launcher=SrunLauncher(),
