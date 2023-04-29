@@ -58,8 +58,16 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
     for train_idx, val_idx in skf.split(X, Y):
         X_train_fold, Y_train_fold = X[train_idx], Y[train_idx]
         X_val_fold, Y_val_fold = X[val_idx], Y[val_idx]
-
         bilstm = BiLSTM(input_size, hidden_size_1, hidden_size_2, num_layers, output_size)
+
+
+        if torch.cuda.is_available():
+            X_train_fold = X_train_fold.cuda()
+            Y_train_fold = Y_train_fold.cuda()
+            X_val_fold = X_val_fold.cuda()
+            Y_val_fold = Y_val_fold.cuda()
+            bilstm = bilstm.cuda()
+
         criterion = nn.MSELoss()
         optimizer = torch.optim.Adam(bilstm.parameters(), lr=0.01)
         bilstm.train()
@@ -83,7 +91,6 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
 
         y_pred = []
         for val in y_hat.data:
-            # print(val)
             if val <= 0.6:
                 y_pred.append(0)
             else:
@@ -92,8 +99,8 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
         y_pred = torch.tensor(y_pred)
 
 
-        f1_macro = f1_score(Y_val_fold, y_pred.detach().numpy(), average='macro')
-        f1_micro = f1_score(Y_val_fold, y_pred.detach().numpy(), average='micro')
+        f1_macro = f1_score(Y_val_fold.detach().numpy(), y_pred.detach().numpy(), average='macro')
+        f1_micro = f1_score(Y_val_fold.detach().numpy(), y_pred.detach().numpy(), average='micro')
         # print(f"The f1 macro score is {f1_macro} and f1_micro score is {f1_micro}")
 
         f1_macro_list.append(f1_macro)
@@ -168,4 +175,4 @@ if __name__ == '__main__':
 
     main(hidden_size_1, hidden_size_2, n_splits, epochs)
 
-# python3.10 bilstm.py --epochs=2 --hidden_size_1=10 --hidden_size_2=10 --n_splits=4
+# python models/DL/word-embeddings/bilstm.py --epochs=20 --hidden_size_1=128 --hidden_size_2=64 --n_splits=10
