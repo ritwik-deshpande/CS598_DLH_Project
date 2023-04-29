@@ -100,8 +100,8 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
         y_pred = torch.tensor(y_pred)
 
 
-        f1_macro = f1_score(Y_val_fold.detach().numpy(), y_pred.detach().numpy(), average='macro')
-        f1_micro = f1_score(Y_val_fold.detach().numpy(), y_pred.detach().numpy(), average='micro')
+        f1_macro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='macro')
+        f1_micro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='micro')
         # print(f"The f1 macro score is {f1_macro} and f1_micro score is {f1_micro}")
 
         f1_macro_list.append(f1_macro)
