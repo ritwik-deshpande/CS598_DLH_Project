@@ -176,4 +176,6 @@ if __name__ == '__main__':
 
     main(hidden_size_1, hidden_size_2, n_splits, epochs)
 
-# python models/DL/word-embeddings/bilstm.py --epochs=20 --hidden_size_1=128 --hidden_size_2=64 --n_splits=10
+# CUDA_VISIBLE_DEVICES=0 python models/DL/word-embeddings/bilstm.py --epochs=20 --hidden_size_1=128 --hidden_size_2=64 --n_splits=10
+
+# srun --account=bbmi-delta-gpu --partition=gpuA100x4-interactive --nodes=1 --gpus-per-node=1 --tasks=1 --tasks-per-node=16 --cpus-per-task=8 --mem=64g --pty bash
