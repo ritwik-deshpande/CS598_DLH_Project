@@ -67,6 +67,7 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
             X_val_fold = X_val_fold.cuda()
             Y_val_fold = Y_val_fold.cuda()
             bilstm = bilstm.cuda()
+            bilstm = torch.nn.DataParallel(bilstm)
 
         criterion = nn.MSELoss()
         optimizer = torch.optim.Adam(bilstm.parameters(), lr=0.01)
