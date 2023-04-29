@@ -2,8 +2,8 @@ import numpy as np
 from gensim.models import Word2Vec
 import collections
 
-VECTOR_SIZE = 100
-
+VECTOR_SIZE = 300
+DOCUMENT_LENGTH = 500
 
 class Word2VecFeatureGeneration:
     def __init__(self, df, disease_name):
@@ -11,7 +11,9 @@ class Word2VecFeatureGeneration:
         self.disease_name = disease_name
 
     def word2vec_matrix_gen(self):
-        sentences = self.df['text'].apply(lambda x: x.split(' ')).values
+        self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
+        self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
+        sentences = self.df['split_text'].values
         # print(sentences)
         model = Word2Vec(sentences, vector_size=VECTOR_SIZE, window=5, min_count=1, workers=4)
         max_length = max(len(sentence) for sentence in sentences)
