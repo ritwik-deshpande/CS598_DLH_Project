@@ -9,10 +9,7 @@ From: pyhf/cuda:0.6.2-torch-cuda-11.1
     pip install funcx-endpoint==1.0.11
     pip install -r dl_requirements.txt
     python -m spacy download en_core_web_sm
-    chmod 777 setup.sh
-    chmod 777 ~/
-    echo "Giving write permission to home"
-    ./setup.sh
+
 
 
 # singularity exec --mount type=bind,src=/scratch/bbmi/bengal1,dst=/project /projects/bbmi/bengal1/CLEAN_ritwikd2.sif funcx-worker  --worker_id 0 -a 127.0.0.1 -p 59972 -t /projects/bbmi/bengal1/CLEAN_ritwikd2.sif --logdir=/u/ritwikd2/.funcx/clean/HighThroughputExecutor/worker_logs/249faa98a6e6
