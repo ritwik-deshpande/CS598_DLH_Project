@@ -1,14 +1,7 @@
 import csv
-import sys
-import os
-import pandas as pd
 import argparse
 from funcx import FuncXExecutor
 
-module_path = os.path.join(os.path.dirname(__file__), '..', '..', '..')
-sys.path.append(module_path)
-from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration
-os.chdir(module_path)
 
 def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity):
     import torch
@@ -16,6 +9,13 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
     import numpy as np
     from sklearn.model_selection import KFold
     from sklearn.metrics import f1_score
+    import os
+    import pandas as pd
+    import sys
+    os.chdir('/repo')
+    sys.path.append(os.getcwd())    
+    from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration
+
    
     class BiLSTM(nn.Module):
         def __init__(self, input_size, hidden_size_1, hidden_size_2, num_layers, output_size):
@@ -135,8 +135,9 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
         writer.writerow([column_headings[0], column_headings[1], column_headings[2]])
     
     with FuncXExecutor(endpoint_id=ENDPOINT_ID, container_id=CONTAINER_ID, batch_size=32) as ex:
-        for morbidity in morbidities[:1]:
+        for morbidity in morbidities:
             fut = ex.submit(train_and_validate, hidden_size_1, hidden_size_2, n_splits, epochs, morbidity)
+            # fut = ex.submit(hw)
             res = fut.result()
             print(res)
             f1_macro, f1_micro = res
