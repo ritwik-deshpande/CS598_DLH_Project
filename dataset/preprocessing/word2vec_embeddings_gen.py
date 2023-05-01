@@ -8,7 +8,8 @@ import collections
 import os
 os.chdir('/Users/renalkakhan/Documents/GitHub/CS598_DLH_Project/')
 
-VECTOR_SIZE = 100
+VECTOR_SIZE = 300
+DOCUMENT_LENGTH = 500
 glove_file_path = 'glove.6B.300d.txt'
 
 
@@ -18,9 +19,11 @@ class Word2VecFeatureGeneration:
         self.disease_name = disease_name
 
     def word2vec_matrix_gen(self):
-        sentences = self.df['text'].apply(lambda x: x.split(' ')).values
+        self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
+        self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
+        sentences = self.df['split_text'].values
         # print(sentences)
-        model = Word2Vec(sentences, vector_size=VECTOR_SIZE, window=5, min_count=1, workers=4)
+        model = Word2Vec(sentences, vector_size=VECTOR_SIZE, window=5, min_count=1, workers=4, epochs=10)
         max_length = max(len(sentence) for sentence in sentences)
 
         X = np.zeros((len(sentences), max_length, VECTOR_SIZE)) 
@@ -47,7 +50,7 @@ class GloVeFeatureGeneration:
         self.VECTOR_SIZE = 300
 
     def get_labels(self, data):
-        return data[self.disease_name].values.tolist()
+        return self.df[self.disease_name].values.tolist()
 
     def load_embeddings(self, embedding_path):
         word_vectors = {}
@@ -63,7 +66,9 @@ class GloVeFeatureGeneration:
     def glove_matrix_gen(self, max_length=100):
         word_vectors = self.load_embeddings(self.glove_file_path)
 
-        sentences = self.df['text'].apply(lambda x: x.split()).tolist()
+        self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
+        self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
+        sentences = self.df['split_text'].values
         sentences = [s[:max_length] for s in sentences]
 
         X = np.zeros((len(sentences), max_length, self.VECTOR_SIZE))
@@ -84,7 +89,9 @@ class FastTextFeatureGeneration:
         self.disease_name = disease_name
 
     def fasttext_matrix_gen(self):
-        sentences = self.df['text'].apply(lambda x: x.split(' ')).values
+        self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
+        self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
+        sentences = self.df['split_text'].values
         fasttext_model = FastText(sentences, vector_size=VECTOR_SIZE, window=5, min_count=1, workers=4)
 
         max_length = max(len(sentence) for sentence in sentences)
@@ -111,7 +118,9 @@ class USEFeatureGeneration:
 
     def use_matrix_gen(self):
     
-        sentences = self.df['text'].values
+        self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
+        self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
+        sentences = self.df['split_text'].apply(lambda x: ' '.join(x)).values  # Join list of words back into a sentence
         embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
         sentence_embeddings = embed(sentences)
 
