@@ -9,7 +9,7 @@ import os
 os.chdir('/Users/renalkakhan/Documents/GitHub/CS598_DLH_Project/')
 
 VECTOR_SIZE = 100
-glove_file_path = 'glove.6B.100d.txt'
+glove_file_path = 'glove.6B.300d.txt'
 
 
 class Word2VecFeatureGeneration:
@@ -44,6 +44,7 @@ class GloVeFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
         self.glove_file_path = glove_file_path
+        self.VECTOR_SIZE = 300
 
     def get_labels(self, data):
         return data[self.disease_name].values.tolist()
@@ -56,25 +57,25 @@ class GloVeFeatureGeneration:
                 coefs = np.fromstring(coefs, "f", sep=" ")
                 word_vectors[word] = coefs
         # Add UNK token to the vocabulary with a random vector
-        word_vectors['UNK'] = np.random.rand(100)
+        word_vectors['UNK'] = np.random.rand(self.VECTOR_SIZE)
         return word_vectors
-    
-    
+
     def glove_matrix_gen(self, max_length=100):
         word_vectors = self.load_embeddings(self.glove_file_path)
 
         sentences = self.df['text'].apply(lambda x: x.split()).tolist()
         sentences = [s[:max_length] for s in sentences]
 
-        X = np.zeros((len(sentences), max_length, VECTOR_SIZE))
+        X = np.zeros((len(sentences), max_length, self.VECTOR_SIZE))
         for i, sentence in enumerate(sentences):
             sentence = [word if word in word_vectors else 'UNK' for word in sentence]
             sentence_vectors = [word_vectors.get(word, word_vectors['UNK']) for word in sentence]
-            sentence_vectors += [np.zeros(VECTOR_SIZE)] * (max_length - len(sentence))
+            sentence_vectors += [np.zeros(self.VECTOR_SIZE)] * (max_length - len(sentence))
             X[i, :, :] = np.array(sentence_vectors)
         Y = np.array(self.get_labels(self.df))
         words = list(word_vectors.keys())
         return X, Y, words
+
 
 
 class FastTextFeatureGeneration:
