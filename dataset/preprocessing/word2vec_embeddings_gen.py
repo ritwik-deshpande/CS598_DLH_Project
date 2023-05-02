@@ -2,8 +2,7 @@
 import numpy as np
 from gensim.models import Word2Vec
 from gensim.models import FastText
-import tensorflow as tf
-import tensorflow_hub as hub
+from sentence_transformers import SentenceTransformer
 import collections
 import os
 os.chdir('/Users/renalkakhan/Documents/GitHub/CS598_DLH_Project/')
@@ -121,8 +120,8 @@ class USEFeatureGeneration:
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
         self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
         sentences = self.df['split_text'].apply(lambda x: ' '.join(x)).values  # Join list of words back into a sentence
-        embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
-        sentence_embeddings = embed(sentences)
+        model = SentenceTransformer('sentence-transformers/use-cmlm-multilingual')
+        sentence_embeddings = model.encode(sentences)
 
         X = np.array(sentence_embeddings)
         Y = np.array(self.df[self.disease_name].values)
