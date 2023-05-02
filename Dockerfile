@@ -12,18 +12,18 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
     
 RUN apt update
 RUN apt install -y git-core
+RUN apt install wget
+RUN apt install unzip
 
-WORKDIR /cs598
-
-# Copy the current directory contents into the container at /app
-COPY . /cs598
-
-RUN pip3 install git+https://github.com/LeeKamentsky/python-javabridge
-RUN pip3 install -r requirements.txt
-RUN python3.7 -m spacy download en-core-web-sm==3.5.0
-
-
-
+WORKDIR /app
+COPY . .
+RUN ls -lrt
+RUN wget http://www.java2s.com/Code/JarDownload/weka/weka.jar.zip
+RUN ls -lrt
+RUN unzip weka.jar.zip
+RUN cd CS598_DLH_Project/
+RUN ls -lrt 
+RUN pip install -r requirements.txt
 # Expose port 8888 for Jupyter Notebook
 EXPOSE 8888
 
