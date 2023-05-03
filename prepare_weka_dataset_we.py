@@ -16,18 +16,11 @@ for morbidity in morbidities:
 
     
     X_train, Y_train, words_train = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).word2vec_matrix_gen()
-    X_test, Y_test, words_test = Word2VecFeatureGeneration(test_preprocessed_df, morbidity).word2vec_matrix_gen()
     
     
     X_train = np.average(X_train, axis=1)
-    X_test = np.average(X_test, axis=1)
 
     X = np.column_stack((X_train, Y_train))
     no_of_columns = X_train.shape[1]
     columns = ['f' + str(i) for i in range(no_of_columns)] + ['class']
     pandas2arff(pd.DataFrame(X, columns=columns), f'./dataset/train/train_{morbidity}_we.arff')
-    
-    X = np.column_stack((X_test, Y_test))
-    no_of_columns = X_test.shape[1]
-    columns = ['f' + str(i) for i in range(no_of_columns)] + ['class']
-    pandas2arff(pd.DataFrame(X, columns=columns), f'./dataset/test/test_{morbidity}_we.arff')

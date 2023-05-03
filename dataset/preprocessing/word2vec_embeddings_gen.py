@@ -2,11 +2,8 @@
 import numpy as np
 from gensim.models import Word2Vec
 from gensim.models import FastText
-import tensorflow as tf
 import tensorflow_hub as hub
 import collections
-import os
-os.chdir('/Users/renalkakhan/Documents/GitHub/CS598_DLH_Project/')
 
 VECTOR_SIZE = 300
 DOCUMENT_LENGTH = 500
