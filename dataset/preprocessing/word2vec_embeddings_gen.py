@@ -8,7 +8,7 @@ import collections
 VECTOR_SIZE = 300
 DOCUMENT_LENGTH = 500
 
-glove_file_path = './dataset/embeddings/glove.6B.300d.txt'
+glove_file_path = '../embeddings/glove.6B.300d.txt'
 
 class Word2VecFeatureGeneration:
     def __init__(self, df, disease_name):

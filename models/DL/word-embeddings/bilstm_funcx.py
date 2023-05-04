@@ -2,8 +2,6 @@ import csv
 import argparse
 from funcx import FuncXExecutor
 
-
-
 def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity, word_embedding):
     import torch
     import torch.nn as nn
@@ -136,11 +134,11 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
     morbidities = ['Asthma', 'CAD', 'CHF', 'Depression', 'Diabetes', 'Gallstones', 'GERD', 'Gout', 'Hypercholesterolemia', 'Hypertension', 'Hypertriglyceridemia', 'OA', 'Obesity', 'OSA', 'PVD', 'Venous-Insufficiency']
 
     column_headings = ["Morbidity Class", "DL_Macro_F1_word2vec", "DL_Micro_F1_word2vec"\
-                    , "DL_Macro_F1_glove", "DL_Micro_F1_glove"\
+                    # , "DL_Macro_F1_glove", "DL_Micro_F1_glove"\
                     ,"DL_Macro_F1_fasttext", "DL_Micro_F1_fasttext"\
                     ,"DL_Macro_F1_USE", "DL_Micro_F1_USE"]
     
-    word_embeddings = ["word2vec", "glove", "fasttext", "USE"]
+    word_embeddings = ["word2vec", "fasttext", "USE"]
     
     
 
