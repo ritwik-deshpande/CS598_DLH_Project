@@ -130,6 +130,6 @@ class USEFeatureGeneration:
 
         num_sentences = len(sentences)
         Y = np.array(self.df[self.disease_name].values)
-        X = np.reshape(embeddings_300, (num_sentences, DOCUMENT_LENGTH, VECTOR_SIZE))
+        X = np.reshape(embeddings_300, (num_sentences, 1, VECTOR_SIZE))
 
         return X, Y, []

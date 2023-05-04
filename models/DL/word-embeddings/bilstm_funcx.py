@@ -134,11 +134,11 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
     morbidities = ['Asthma', 'CAD', 'CHF', 'Depression', 'Diabetes', 'Gallstones', 'GERD', 'Gout', 'Hypercholesterolemia', 'Hypertension', 'Hypertriglyceridemia', 'OA', 'Obesity', 'OSA', 'PVD', 'Venous-Insufficiency']
 
     column_headings = ["Morbidity Class", "DL_Macro_F1_word2vec", "DL_Micro_F1_word2vec"\
-                    # , "DL_Macro_F1_glove", "DL_Micro_F1_glove"\
+                    , "DL_Macro_F1_glove", "DL_Micro_F1_glove"\
                     ,"DL_Macro_F1_fasttext", "DL_Micro_F1_fasttext"\
                     ,"DL_Macro_F1_USE", "DL_Micro_F1_USE"]
     
-    word_embeddings = ["word2vec", "fasttext", "USE"]
+    word_embeddings = ["word2vec", "glove", "fasttext", "USE"]
     
     
 
@@ -146,7 +146,7 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
 
     with open("./results/word-embeddings-features/performance_DL.csv", "w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([column_headings[0], column_headings[1], column_headings[2]])
+        writer.writerow(column_headings)
     
     with FuncXExecutor(endpoint_id=ENDPOINT_ID, container_id=CONTAINER_ID, batch_size=32) as ex:
 
