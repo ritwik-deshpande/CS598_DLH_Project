@@ -1,6 +1,8 @@
 import csv
 import argparse
 from funcx import FuncXExecutor
+def hw():
+    return 'hello', 'world'
 
 def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity, word_embedding):
     import torch
@@ -129,8 +131,7 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
 
 
 def main(hidden_size_1, hidden_size_2, n_splits, epochs):
-    all_f1_macro_scores = []
-    all_f1_micro_scores = []
+
     morbidities = ['Asthma', 'CAD', 'CHF', 'Depression', 'Diabetes', 'Gallstones', 'GERD', 'Gout', 'Hypercholesterolemia', 'Hypertension', 'Hypertriglyceridemia', 'OA', 'Obesity', 'OSA', 'PVD', 'Venous-Insufficiency']
 
     column_headings = ["Morbidity Class", "DL_Macro_F1_word2vec", "DL_Micro_F1_word2vec"\
@@ -140,39 +141,27 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
     
     word_embeddings = ["word2vec", "glove", "fasttext", "USE"]
     
-    
-
-
-
     with open("./results/word-embeddings-features/performance_DL.csv", "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(column_headings)
     
-    with FuncXExecutor(endpoint_id=ENDPOINT_ID, container_id=CONTAINER_ID, batch_size=32) as ex:
-
+    with FuncXExecutor(endpoint_id=ENDPOINT_ID, container_id=CONTAINER_ID) as ex:
         for morbidity in morbidities:
             row_heading = morbidity
             row = [row_heading]
             for word_embedding in word_embeddings:
+                print(morbidity, word_embedding)
+                # fut = ex.submit(hw)
                 fut = ex.submit(train_and_validate, hidden_size_1, hidden_size_2, n_splits, epochs, morbidity, word_embedding)
                 res = fut.result()
                 print(res)
                 f1_macro, f1_micro = res
                 data = [f1_macro, f1_micro]
-                all_f1_macro_scores.append(f1_macro)
-                all_f1_micro_scores.append(f1_micro)
-            row.extend(data)
+                row.extend(data)
+            with open("./results/word-embeddings-features/performance_DL.csv", "a", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow(row)
 
-
-        with open("./results/word-embeddings-features/performance_DL.csv", "a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(row)
-
-    with open("./results/word-embeddings-features/performance_DL.csv", "a", newline="") as file:
-        writer = csv.writer(file)
-        row = ["Overall-Average"]
-        row.extend([sum(all_f1_macro_scores)/len(all_f1_macro_scores),  sum(all_f1_micro_scores)/len(all_f1_micro_scores) ])
-        writer.writerow(row)
 
 if __name__ == '__main__':
     CONTAINER_ID = "db367450-ab9d-421b-a296-e29d757943e5"
