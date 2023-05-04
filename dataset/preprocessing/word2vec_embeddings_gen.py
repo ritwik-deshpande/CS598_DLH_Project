@@ -123,6 +123,9 @@ class USEFeatureGeneration:
 
         X = np.array(sentence_embeddings)
         Y = np.array(self.df[self.disease_name].values)
+
+        X = np.average(X, axis=1)
+        X = X.reshape(-1, 1)
         words = []
 
         print(X.shape, Y.shape, collections.Counter(list(Y)))
