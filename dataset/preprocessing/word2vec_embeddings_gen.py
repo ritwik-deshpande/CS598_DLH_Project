@@ -4,18 +4,19 @@ from gensim.models import Word2Vec
 from gensim.models import FastText
 import tensorflow_hub as hub
 import collections
+import os
 
 VECTOR_SIZE = 300
 DOCUMENT_LENGTH = 500
 
-glove_file_path = 'glove.6B.300d.txt'
+glove_file_path = './dataset/embeddings/glove.6B.300d.txt'
 
 class Word2VecFeatureGeneration:
     def __init__(self, df, disease_name):
         self.df = df
         self.disease_name = disease_name
 
-    def word2vec_matrix_gen(self):
+    def matrix_gen(self):
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
         self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
         sentences = self.df['split_text'].values
@@ -44,7 +45,8 @@ class GloVeFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
         self.glove_file_path = glove_file_path
-        self.VECTOR_SIZE = 300
+        self.VECTOR_SIZE = VECTOR_SIZE
+        print(os.getcwd())
 
     def get_labels(self, data):
         return self.df[self.disease_name].values.tolist()
@@ -60,7 +62,7 @@ class GloVeFeatureGeneration:
         word_vectors['UNK'] = np.random.rand(self.VECTOR_SIZE)
         return word_vectors
 
-    def glove_matrix_gen(self, max_length=100):
+    def matrix_gen(self, max_length=100):
         word_vectors = self.load_embeddings(self.glove_file_path)
 
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
@@ -85,7 +87,7 @@ class FastTextFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
 
-    def fasttext_matrix_gen(self):
+    def matrix_gen(self):
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
         self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
         sentences = self.df['split_text'].values
@@ -103,8 +105,6 @@ class FastTextFeatureGeneration:
 
         Y = np.array(self.df[self.disease_name].values)
         words = fasttext_model.wv.key_to_index.keys()
-        print(X.shape, Y.shape, collections.Counter(list(Y)))
-
         return X, Y, words
 
 
@@ -113,18 +113,23 @@ class USEFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
 
-    def use_matrix_gen(self):
+    def matrix_gen(self):
     
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
         self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
         sentences = self.df['split_text'].apply(lambda x: ' '.join(x)).values  # Join list of words back into a sentence
         embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
         sentence_embeddings = embed(sentences)
+        embedding_size = sentence_embeddings.shape[-1]
 
-        X = np.array(sentence_embeddings)
+
+        projection_matrix = np.random.randn(embedding_size, VECTOR_SIZE)
+
+        # Project the embeddings to the lower-dimensional space
+        embeddings_300 = np.dot(sentence_embeddings, projection_matrix)
+
+        num_sentences = len(sentences)
         Y = np.array(self.df[self.disease_name].values)
-        words = []
+        X = np.reshape(embeddings_300, (num_sentences, 1, VECTOR_SIZE))
 
-        print(X.shape, Y.shape, collections.Counter(list(Y)))
-
-        return X, Y, words
+        return X, Y, []
