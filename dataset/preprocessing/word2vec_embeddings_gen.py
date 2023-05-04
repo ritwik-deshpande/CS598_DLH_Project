@@ -4,11 +4,12 @@ from gensim.models import Word2Vec
 from gensim.models import FastText
 import tensorflow_hub as hub
 import collections
+import os
 
 VECTOR_SIZE = 300
 DOCUMENT_LENGTH = 500
 
-glove_file_path = '../embeddings/glove.6B.300d.txt'
+glove_file_path = './dataset/embeddings/glove.6B.300d.txt'
 
 class Word2VecFeatureGeneration:
     def __init__(self, df, disease_name):
@@ -44,7 +45,8 @@ class GloVeFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
         self.glove_file_path = glove_file_path
-        self.VECTOR_SIZE = 300
+        self.VECTOR_SIZE = VECTOR_SIZE
+        print(os.getcwd())
 
     def get_labels(self, data):
         return self.df[self.disease_name].values.tolist()
@@ -103,8 +105,6 @@ class FastTextFeatureGeneration:
 
         Y = np.array(self.df[self.disease_name].values)
         words = fasttext_model.wv.key_to_index.keys()
-        print(X.shape, Y.shape, collections.Counter(list(Y)))
-
         return X, Y, words
 
 
@@ -120,14 +120,16 @@ class USEFeatureGeneration:
         sentences = self.df['split_text'].apply(lambda x: ' '.join(x)).values  # Join list of words back into a sentence
         embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
         sentence_embeddings = embed(sentences)
+        embedding_size = sentence_embeddings.shape[-1]
 
-        X = np.array(sentence_embeddings)
+
+        projection_matrix = np.random.randn(embedding_size, VECTOR_SIZE)
+
+        # Project the embeddings to the lower-dimensional space
+        embeddings_300 = np.dot(sentence_embeddings, projection_matrix)
+
+        num_sentences = len(sentences)
         Y = np.array(self.df[self.disease_name].values)
+        X = np.reshape(embeddings_300, (num_sentences, DOCUMENT_LENGTH, VECTOR_SIZE))
 
-        X = np.average(X, axis=1)
-        X = X.reshape(-1, 1)
-        words = []
-
-        print(X.shape, Y.shape, collections.Counter(list(Y)))
-
-        return X, Y, words
+        return X, Y, []
