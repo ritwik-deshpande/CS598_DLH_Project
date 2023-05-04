@@ -3,7 +3,8 @@ import argparse
 from funcx import FuncXExecutor
 
 
-def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity):
+
+def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity, word_embedding):
     import torch
     import torch.nn as nn
     import numpy as np
@@ -14,8 +15,14 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
     import sys
     os.chdir('/repo')
     sys.path.append(os.getcwd())    
-    from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration
+    from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration, GloVeFeatureGeneration, FastTextFeatureGeneration, USEFeatureGeneration
 
+    vectorizor_dict = {
+        "word2vec": Word2VecFeatureGeneration,
+        "glove": GloVeFeatureGeneration,
+        "fasttext": FastTextFeatureGeneration,
+        "USE": USEFeatureGeneration
+    }
    
     class BiLSTM(nn.Module):
         def __init__(self, input_size, hidden_size_1, hidden_size_2, num_layers, output_size):
@@ -42,7 +49,7 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
     train_preprocessed_df = pd.read_csv('./dataset/train/train_data_intuitive_preprocessed.csv')
     train_preprocessed_df = train_preprocessed_df[train_preprocessed_df[morbidity].isin([1.0, 0.0])]
 
-    X, Y, words = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).word2vec_matrix_gen()
+    X, Y, words = vectorizor_dict[word_embedding](train_preprocessed_df, morbidity).matrix_gen()
         
 
     X = torch.tensor(X, dtype=torch.float32)
@@ -128,29 +135,40 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
     all_f1_micro_scores = []
     morbidities = ['Asthma', 'CAD', 'CHF', 'Depression', 'Diabetes', 'Gallstones', 'GERD', 'Gout', 'Hypercholesterolemia', 'Hypertension', 'Hypertriglyceridemia', 'OA', 'Obesity', 'OSA', 'PVD', 'Venous-Insufficiency']
 
-    column_headings = ["Morbidity Class", "DL_Macro F1", "DL_Micro F1"]
+    column_headings = ["Morbidity Class", "DL_Macro_F1_word2vec", "DL_Micro_F1_word2vec"\
+                    , "DL_Macro_F1_glove", "DL_Micro_F1_glove"\
+                    ,"DL_Macro_F1_fasttext", "DL_Micro_F1_fasttext"\
+                    ,"DL_Macro_F1_USE", "DL_Micro_F1_USE"]
+    
+    word_embeddings = ["word2vec", "glove", "fasttext", "USE"]
+    
+    
+
+
 
     with open("./results/word-embeddings-features/performance_DL.csv", "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow([column_headings[0], column_headings[1], column_headings[2]])
     
     with FuncXExecutor(endpoint_id=ENDPOINT_ID, container_id=CONTAINER_ID, batch_size=32) as ex:
-        for morbidity in morbidities:
-            fut = ex.submit(train_and_validate, hidden_size_1, hidden_size_2, n_splits, epochs, morbidity)
-            # fut = ex.submit(hw)
-            res = fut.result()
-            print(res)
-            f1_macro, f1_micro = res
-            data = [f1_macro, f1_micro]
-            all_f1_macro_scores.append(f1_macro)
-            all_f1_micro_scores.append(f1_micro)
 
+        for morbidity in morbidities:
             row_heading = morbidity
-            with open("./results/word-embeddings-features/performance_DL.csv", "a", newline="") as file:
-                writer = csv.writer(file)
-                row = [row_heading]
-                row.extend(data)
-                writer.writerow(row)
+            row = [row_heading]
+            for word_embedding in word_embeddings:
+                fut = ex.submit(train_and_validate, hidden_size_1, hidden_size_2, n_splits, epochs, morbidity, word_embedding)
+                res = fut.result()
+                print(res)
+                f1_macro, f1_micro = res
+                data = [f1_macro, f1_micro]
+                all_f1_macro_scores.append(f1_macro)
+                all_f1_micro_scores.append(f1_micro)
+            row.extend(data)
+
+
+        with open("./results/word-embeddings-features/performance_DL.csv", "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(row)
 
     with open("./results/word-embeddings-features/performance_DL.csv", "a", newline="") as file:
         writer = csv.writer(file)

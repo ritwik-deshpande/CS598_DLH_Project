@@ -15,7 +15,7 @@ class Word2VecFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
 
-    def word2vec_matrix_gen(self):
+    def matrix_gen(self):
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
         self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
         sentences = self.df['split_text'].values
@@ -60,7 +60,7 @@ class GloVeFeatureGeneration:
         word_vectors['UNK'] = np.random.rand(self.VECTOR_SIZE)
         return word_vectors
 
-    def glove_matrix_gen(self, max_length=100):
+    def matrix_gen(self, max_length=100):
         word_vectors = self.load_embeddings(self.glove_file_path)
 
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
@@ -85,7 +85,7 @@ class FastTextFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
 
-    def fasttext_matrix_gen(self):
+    def matrix_gen(self):
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
         self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
         sentences = self.df['split_text'].values
@@ -113,7 +113,7 @@ class USEFeatureGeneration:
         self.df = df
         self.disease_name = disease_name
 
-    def use_matrix_gen(self):
+    def matrix_gen(self):
     
         self.df['split_text'] = self.df['text'].apply(lambda x: x.split(' '))
         self.df = self.df[self.df.apply(lambda row: len(row['split_text']) < DOCUMENT_LENGTH, axis=1)]
