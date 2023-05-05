@@ -86,14 +86,14 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
             bilstm = bilstm.cuda()
             bilstm = torch.nn.DataParallel(bilstm)
 
-        class_counter = collections.Counter(np.array(Y_train_fold).tolist())
-        weight  = class_counter[0.0]/class_counter[1.0]
+        class_counter = collections.Counter(np.array(Y_train_fold.cpu()).tolist())
 
         if (0.0 not in class_counter.keys()) or (1.0 not in class_counter.keys()):
             f1_micro = 1
             f1_macro = 1
         else:
-            criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor(weight))
+            # weight  = class_counter[0.0]/class_counter[1.0]
+            criterion = nn.BCEWithLogitsLoss()
             optimizer = torch.optim.Adam(bilstm.parameters(), lr=0.01)
             bilstm.train()
             for epoch in range(epochs):
