@@ -46,7 +46,6 @@ class GloVeFeatureGeneration:
         self.disease_name = disease_name
         self.glove_file_path = glove_file_path
         self.VECTOR_SIZE = VECTOR_SIZE
-        print(os.getcwd())
 
     def get_labels(self, data):
         return self.df[self.disease_name].values.tolist()
