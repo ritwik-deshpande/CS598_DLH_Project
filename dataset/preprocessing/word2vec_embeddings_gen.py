@@ -7,7 +7,7 @@ import collections
 import os
 
 VECTOR_SIZE = 300
-DOCUMENT_LENGTH = 1000
+DOCUMENT_LENGTH = 500
 
 glove_file_path = './dataset/embeddings/glove.6B.300d.txt'
 
