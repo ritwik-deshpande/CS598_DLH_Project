@@ -41,7 +41,6 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
     Y = torch.tensor(Y, dtype=torch.float32)
     # print(X.shape)
 
-
     #Model parameters
     input_size = X.size(2)
     hidden_size_1 = hidden_size_1 #Following the paper
@@ -69,40 +68,49 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
             bilstm = bilstm.cuda()
             bilstm = torch.nn.DataParallel(bilstm)
 
-        criterion = nn.MSELoss()
-        optimizer = torch.optim.Adam(bilstm.parameters(), lr=0.01)
-        bilstm.train()
-        for epoch in range(epochs):
-            # Forward pass
-            outputs = bilstm(X_train_fold)
-            # print(outputs.shape, Y.unsqueeze(1).shape)
-            loss = criterion(outputs, Y_train_fold.unsqueeze(1))
+        # print(np.unique(Y_train_fold))
+        class_counter = collections.Counter(np.array(Y_train_fold).tolist())
+        weight  = class_counter[0.0]/class_counter[1.0]
 
-            # Backward and optimize
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            print(f"Epoch {epoch} loss is {loss}")
+        if (0.0 not in class_counter.keys()) or (1.0 not in class_counter.keys()):
+            f1_micro = 1
+            f1_macro = 1
+        else:
+        # criterion = nn.CrossEntropyLoss(weight=torch.tensor(class_weights, dtype=torch.float32))
+            criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor(weight))
+            optimizer = torch.optim.Adam(bilstm.parameters(), lr=0.01)
+            bilstm.train()
+            for epoch in range(epochs):
+                # Forward pass
+                outputs = bilstm(X_train_fold)
+                # print(outputs.shape, Y_train_fold.unsqueeze(1).shape)
+                loss = criterion(outputs, Y_train_fold.unsqueeze(1))
 
-        bilstm.eval()
-        with torch.no_grad():
-            y_hat = bilstm(X_val_fold)
-        y_hat = y_hat.view(y_hat.shape[0])
+                # Backward and optimize
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+                print(f"Epoch {epoch} loss is {loss}")
 
-        # print(Y_val_fold.shape, y_hat.shape)
+            bilstm.eval()
+            with torch.no_grad():
+                y_hat = bilstm(X_val_fold)
+            y_hat = y_hat.view(y_hat.shape[0])
 
-        y_pred = []
-        for val in y_hat.data:
-            if val <= 0.6:
-                y_pred.append(0)
-            else:
-                y_pred.append(1)
-                
-        y_pred = torch.tensor(y_pred)
+            # print(Y_val_fold.shape, y_hat.shape)
+
+            y_pred = []
+            for val in y_hat.data:
+                if val <= 0.6:
+                    y_pred.append(0)
+                else:
+                    y_pred.append(1)
+                    
+            y_pred = torch.tensor(y_pred)
 
 
-        f1_macro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='macro')
-        f1_micro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='micro')
+            f1_macro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='macro')
+            f1_micro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='micro')
         # print(f"The f1 macro score is {f1_macro} and f1_micro score is {f1_micro}")
 
         f1_macro_list.append(f1_macro)
@@ -118,7 +126,7 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y):
 def main(hidden_size_1, hidden_size_2, n_splits, epochs):
     all_f1_macro_scores = []
     all_f1_micro_scores = []
-    morbidities = ['Asthma', 'CAD', 'CHF', 'Depression', 'Diabetes', 'Gallstones', 'GERD', 'Gout', 'Hypercholesterolemia', 'Hypertension', 'Hypertriglyceridemia', 'OA', 'Obesity', 'OSA', 'PVD', 'Venous-Insufficiency']
+    morbidities = ['Diabetes', 'Gallstones', 'GERD', 'Gout', 'Hypercholesterolemia', 'Hypertension', 'Hypertriglyceridemia', 'OA', 'Obesity', 'OSA', 'PVD', 'Venous-Insufficiency']
 
     column_headings = ["Morbidity Class", "DL_Macro F1", "DL_Micro F1"]
 
@@ -130,7 +138,7 @@ def main(hidden_size_1, hidden_size_2, n_splits, epochs):
         train_preprocessed_df = pd.read_csv('./dataset/train/train_data_intuitive_preprocessed.csv')
         train_preprocessed_df = train_preprocessed_df[train_preprocessed_df[morbidity].isin([1.0, 0.0])]
 
-        X, Y, words = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).word2vec_matrix_gen()
+        X, Y, words = Word2VecFeatureGeneration(train_preprocessed_df, morbidity).matrix_gen()
     
         f1_macro, f1_micro = train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, X, Y)
         data = [f1_macro, f1_micro]
