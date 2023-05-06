@@ -124,13 +124,14 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
                     
             y_pred = torch.tensor(y_pred)
 
-
             f1_macro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='macro')
             f1_micro = f1_score(Y_val_fold.cpu().numpy(), y_pred.cpu().numpy(), average='micro')
         # print(f"The f1 macro score is {f1_macro} and f1_micro score is {f1_micro}")
 
         f1_macro_list.append(f1_macro)
         f1_micro_list.append(f1_micro)
+        filename = f'bilstm_model_{morbidity}_{word_embedding}.pt'
+        torch.save(bilstm, filename)
 
     f1_macro = np.mean(f1_macro_list)
     f1_micro = np.mean(f1_micro_list)
