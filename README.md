@@ -1,6 +1,14 @@
 # CS598_DLH_Project
 
-## Env Setup
+Ensembling Classical Machine Learning and Deep Learning Approaches for Morbidity Identification From Clinical Notes
+
+### Motivation
+In our research project, we have examined the paper titled 'Ensembling Classical Machine Learning and Deep Learning Approaches for Morbidity Identification From Clinical Notes' \cite{tp1}. The paper titled 'Ensembling Classical Machine Learning and Deep Learning Approaches for Morbidity Identification From Clinical Notes' addresses the challenge of identifying multiple morbidity factors in patients using their clinical records. 
+
+The authors suggest using classical machine learning and deep learning approaches to automatically detect morbidity factors, which can assist healthcare personnel in handling massive volumes of electronic health records. The paper explores different feature representation methods such as word embeddings and bag-of-words, in combination with CML and DL approaches. Furthermore, it investigates the use of ensemble methods to enhance classification accuracy. The paper concludes that ensemble strategies show better performance for morbidity identification and can effectively leverage both CML and DL approaches.
+
+
+### Env Setup
 Setup venv
 ```shell
 python -m venv venv
@@ -8,7 +16,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Dataset preperation
+### Dataset preperation
 
 Convert input Harvard Medical Data xml to csv
 ```shell
