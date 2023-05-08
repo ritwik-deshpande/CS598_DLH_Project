@@ -9,8 +9,8 @@ The authors suggest using classical machine learning and deep learning approache
 
 
 ### Dependencies
-All the dependencies can be found in the following two files:
-[requirements.txt]([https://github.com/user/repo/blob/branch/other_file.md](https://github.com/ritwik-deshpande/CS598_DLH_Project/blob/main/requirements.txt))
+All the dependencies can be found in the following two files:  
+[requirements.txt]([https://github.com/user/repo/blob/branch/other_file.md](https://github.com/ritwik-deshpande/CS598_DLH_Project/blob/main/requirements.txt))  
 [dl_requirements.txt](https://github.com/ritwik-deshpande/CS598_DLH_Project/blob/main/dl_requirements.txt)
 
 
