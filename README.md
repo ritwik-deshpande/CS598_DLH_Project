@@ -37,3 +37,6 @@ Create Weka dataset files for CML models using tfidf representation
 ```shell
 python3 prepare_weka_dataset_we.py
 ```
+
+### References
+Vivek Kumar, Diego Reforgiato Recupero, Daniele Riboni, and Rim Helaoui. 2021. Ensembling classical machine learning and deep learning approaches for morbidity identification from clinical notes. IEEE Access, 9:7107–7126.
