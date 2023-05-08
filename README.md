@@ -63,6 +63,18 @@ All the files for preprocessing the data and generating feature representations 
 All the files in which we train, test and evaluate the CML, DL and ensemble models can be found here:  
 [Models](https://github.com/ritwik-deshpande/CS598_DLH_Project/tree/main/models)
 
+### Implementation
+
+#### CML
+For CML models we have leveraged the scikit learn library which are trained on an Apple Macbook Air M1 8GB PC. For JRip and J48 we have leveraged the weka3.7.8.jar file and utilized the python-weka-wrapper3 and java-bridge to call the respective processes running on the JVM through our python SDK. 
+
+#### Deep Learning
+
+For Deep Learning models we have used the pytorch framework that trains the BiLSTM models on Nvidia A100 GPUs on High Performance Clusters at NCSA, using a fire and forget model provided by globus-compute SDK.
+
+[FAAS]https://www.globus.org/compute
+
+
 ### Results
 All the files containing micro F1 and macro F1 scores can be found here:  
 [Results](https://github.com/ritwik-deshpande/CS598_DLH_Project/tree/main/results)
