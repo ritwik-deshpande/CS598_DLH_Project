@@ -111,7 +111,9 @@ Performance of Random Forest with All features for TF-IDF features
 |OSA                 |0.9776611448543944|0.9782566491943312|
 |PVD                 |0.9670155760085459|0.9680507892930679|
 |Venous-Insufficiency|0.974672820924463 |0.9751396048109967|
-|Overall-Average     |0.9467136599389426|0.9476591858074825|
+|Overall-Average     |0.9467136599389426|0.9476591858074825|  
+
+Performance improves with feature selection.
 
 #### 2. Performance of deep learning classifiers on the given dataset using different word embeddings.
 
@@ -120,14 +122,18 @@ Performance of Random Forest with All features for TF-IDF features
 |Word2Vec            |65.59             |82.06             |
 |Glove               |70.41             |84.26             |
 |FastText            |65.43             |82.03             |
-|USE                 |71.77             |85.37             |
+|USE                 |71.77             |85.37             |  
+
+GloVe performed the best with BiLSTM DL model.
 
 #### 3. Avg F1 scores for BiLSTM and LSTM DL models
 
 |Models|Avg Macro F1|Avg Micro F1|
 |------|------------|------------|
 |BiLSTM|0.683       |0.834       |
-|LSTM  |0.664       |0.823       |
+|LSTM  |0.664       |0.823       |  
+
+BiLSTM performed better than LSTM DL model.
 
 
 ### References
