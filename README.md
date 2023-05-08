@@ -72,7 +72,7 @@ For CML models we have leveraged the scikit learn library which are trained on a
 
 For Deep Learning models we have used the pytorch framework that trains the BiLSTM models on Nvidia A100 GPUs on High Performance Clusters at NCSA, using a fire and forget model provided by globus-compute SDK.
 
-[FAAS]https://www.globus.org/compute
+[Function-as-a-service (globus-compute) ](https://www.globus.org/compute)
 
 
 ### Results
