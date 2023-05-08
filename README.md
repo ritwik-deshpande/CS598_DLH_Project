@@ -10,7 +10,7 @@ The authors suggest using classical machine learning and deep learning approache
 
 ### Dependencies
 All the dependencies can be found in the following two files:  
-[requirements.txt]([https://github.com/user/repo/blob/branch/other_file.md](https://github.com/ritwik-deshpande/CS598_DLH_Project/blob/main/requirements.txt))  
+[requirements.txt](https://github.com/user/repo/blob/branch/other_file.md](https://github.com/ritwik-deshpande/CS598_DLH_Project/blob/main/requirements.txt)  
 [dl_requirements.txt](https://github.com/ritwik-deshpande/CS598_DLH_Project/blob/main/dl_requirements.txt)
 
 
@@ -24,6 +24,7 @@ Setup venv
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+pip install -r dl_requirements.txt
 ```
 
 ### Dataset preperation
@@ -53,6 +54,18 @@ Deep Learning
 cd models/DL/word-embeddings
 python3 bilstm_funcx.py
 ```
+
+### Preprocessing
+All the files for preprocessing the data and generating feature representations can be found here:  
+[Preprocessing](https://github.com/ritwik-deshpande/CS598_DLH_Project/tree/main/dataset/preprocessing)
+
+### Models
+All the files in which we train, test and evaluate the CML, DL and ensemble models can be found here:  
+[Models](https://github.com/ritwik-deshpande/CS598_DLH_Project/tree/main/models)
+
+### Results
+All the files containing micro F1 and macro F1 scores can be found here:  
+[Results](https://github.com/ritwik-deshpande/CS598_DLH_Project/tree/main/results)
 
 ### References
 Vivek Kumar, Diego Reforgiato Recupero, Daniele Riboni, and Rim Helaoui. 2021. Ensembling classical machine learning and deep learning approaches for morbidity identification from clinical notes. IEEE Access, 9:7107–7126.
