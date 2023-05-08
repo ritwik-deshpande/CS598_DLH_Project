@@ -17,6 +17,7 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
     os.chdir('/repo')
     sys.path.append(os.getcwd())    
     from dataset.preprocessing.word2vec_embeddings_gen import Word2VecFeatureGeneration, GloVeFeatureGeneration, FastTextFeatureGeneration, USEFeatureGeneration
+    torch.manual_seed(71)
 
     vectorizor_dict = {
         "word2vec": Word2VecFeatureGeneration,
@@ -130,8 +131,8 @@ def train_and_validate(hidden_size_1, hidden_size_2, n_splits, epochs, morbidity
 
         f1_macro_list.append(f1_macro)
         f1_micro_list.append(f1_micro)
-        filename = f'bilstm_model_{morbidity}_{word_embedding}.pt'
-        torch.save(bilstm, filename)
+        # filename = f'bilstm_model_{morbidity}_{word_embedding}.pt'
+        # torch.save(bilstm, filename)
 
     f1_macro = np.mean(f1_macro_list)
     f1_micro = np.mean(f1_micro_list)
